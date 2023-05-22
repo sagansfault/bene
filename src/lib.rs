@@ -11,6 +11,19 @@ impl<'a> Intake<'a> {
         Intake { args: vec![] }
     }
 
+    /// Adds an argument to the intake to which the intake will try to parse and mutate
+    /// 
+    /// ### Arguments
+    /// * 'cmd_short' - a short version of the command flag, one character
+    /// * 'cmd_long' - a long verion of the command flag, one word
+    /// 
+    /// ### Example
+    /// ```rust
+    /// bene::Intake::new()
+    ///     .arg('f', "frames", &mut frames)
+    ///     .arg('L', "lib", &mut lib);
+    /// ```
+    /// 
     pub fn arg(mut self, cmd_short: char, cmd_long: &str, arg: &'a mut dyn ArgValue) -> Intake<'a> {
         let formatted = format!(r"(?P<short>-{} \w*)|(?P<long>--{} \w*)", cmd_short, cmd_long);
         let regex = Regex::new(formatted.as_str()).unwrap();
@@ -18,6 +31,7 @@ impl<'a> Intake<'a> {
         self
     }
 
+    /// Runs the intake on a given input, this will process via regex and mutate found values
     pub fn process(&mut self, input: &str) {
         let input = format!("{} ", input.trim());
         for arg in self.args.iter_mut() {

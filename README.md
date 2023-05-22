@@ -10,7 +10,7 @@ Would be parsed as:
 ```rust
 let mut frames: usize = 30;
 let mut length = 3; // inferred i32
-let mut lib = false;
+let mut lib = false; // non valued flags are treated as booleans
 
 // let input = "-f 30 --length 5 --lib"
 bene::Intake::new()
